@@ -137,7 +137,6 @@ function log_init() {
 
     declare -r -g CONST_LOG_LEVEL_DEFAULT=$v_logging_level_val
 
-	# declare -g CONST_FILE_LOG="${CONST_DIR_LOG}/${LOGFILE}"
 
 	if [[ ! -d $CONST_DIR_LOG ]]; then
 		mkdir -p $CONST_DIR_LOG
@@ -153,18 +152,7 @@ function log_init() {
         printf "RENAMING EXISTING ${LOGFILE} to ${BACKUP_LOG}\n" | tee -a ${LOGFILE}
     fi
 
-	# Log to sysout AND file
-
-	# (tee -a >(sed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g' > $LOG_FILE))
-	# exec >> >(tee -a ${LOGFILE})
-	# exec >> >(tee -a >(sed -r 's/(\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]|\x1B\(B)//g' >> ${LOGFILE}))
-	# exec >> >(tee -a >(sed -E "s/\x1B(\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]|\(B)//g" >> ${LOGFILE}))
-
 	exec >>>(tee -a >(sed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g'  >> ${LOGFILE}))
-
-	# exec >> >(tee -a >(sed -r 's/\x1B\(B//g'  >> ${LOGFILE}))
-	### The Spag logger should handle the exec redirection
-	###exec 2>&1
 
 	log_default "[$0] Log file location [${LOGFILE}]"
 	log_default "[$0] Logging level set to [$CONST_LOG_LEVEL_DEFAULT]"

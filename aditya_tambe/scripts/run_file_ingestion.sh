@@ -4,7 +4,7 @@
 # Author      : bwt
 # Created Date: 18/09/2021
 # Description : Ingest data from local to HDFS
-# Usage       : bash run_file_ingestion.sh <file_name>
+# Usage       : bash run_file_ingestion.sh
 ##############################################################################
 source ~/environment_profile.sh
 
@@ -13,13 +13,13 @@ LOGFILE=${SYS_LOG}/"run_file_ingestion_"`date +%Y%m%d_%H%M%S`.log
 . ${SYS_ROOT}/aditya_tambe/utils/lib_log.bash
 log_init
 
-
-# checking no of parameters passed
-if [ $# -ne 1 ]
-then
-  log_error "Incorrect no of parameters - only 1 parameter required - file_name_prefix"
-  exit 98
-fi
+#
+## checking no of parameters passed
+#if [ $# -ne 1 ]
+#then
+#  log_error "Incorrect no of parameters - only 1 parameter required - file_name_prefix"
+#  exit 98
+#fi
 
 current_date=`date +%Y_%m_%d`
 # generate local path
