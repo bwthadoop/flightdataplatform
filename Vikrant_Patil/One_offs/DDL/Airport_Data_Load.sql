@@ -1,0 +1,1 @@
+LOAD DATA LOCAL INFILE '/home/hadoop/Project1/Datasets/airports.csv' INTO TABLE flight_data.Airport   FIELDS TERMINATED BY ','    ENCLOSED BY '"'   LINES TERMINATED BY '\r\n'   IGNORE 1 LINES;
