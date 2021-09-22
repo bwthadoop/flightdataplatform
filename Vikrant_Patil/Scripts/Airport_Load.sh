@@ -1,7 +1,7 @@
 
 ########################################################################
 # Script Name : Airport_load.sh                                        #
-# Author      : Vikrant_Patil                                        #
+# Author      : Vikrant_Patil                                          #
 # date        : 2021-09-20                                             #
 # Dataset     : Airport Dataset                                        #
 # Description : bash script to import Full load into HDFS Location through sqoop import  #

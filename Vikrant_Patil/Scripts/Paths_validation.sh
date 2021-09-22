@@ -30,4 +30,12 @@ fi
 
 #Password File Validation
 #Log file path Validation
+if [ -d "${log_loc}" ];
+then
+   echo "${log_loc} path exists."
+else
+   echo " path dont exist.Creating path."
+   mkdir -p ${log_loc}
+fi
+
 #
