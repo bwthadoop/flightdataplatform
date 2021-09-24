@@ -47,7 +47,6 @@ object testdqcheck {
 
 #//  "pattern": "^[A-Za-z0-9\s]+$"
 # //  "containsNull":false
-#    // "nullable":true,
     println(newSchema1)
     println("*****************************************************")
 
