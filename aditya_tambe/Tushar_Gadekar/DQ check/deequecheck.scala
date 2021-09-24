@@ -9,8 +9,7 @@ object testdqcheck {
     // -Xmx512m
     spark.sparkContext.setLogLevel("ERROR")
 
-
-  println("*********************************")
+    println("*********************************")
         val newSchema1: StructType = DataType.fromJson(
       """{
         |  "type": "struct",
