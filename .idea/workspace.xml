@@ -2,11 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="47bd8e2d-3023-45af-a1d3-7ce3d1a87882" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Sharad_Ekale_BWT/scripts/Project2_Scripts/hive_one_off.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Sharad_Ekale_BWT/scripts/Project2_Scripts/injection_local_to_hdfs.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sharad_Ekale_BWT/config/Project_2_congig details/credentials.config" beforeDir="false" afterPath="$PROJECT_DIR$/Sharad_Ekale_BWT/config/Project_2_congig details/credentials.config" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sharad_Ekale_BWT/config/Project_2_congig details/job.config" beforeDir="false" afterPath="$PROJECT_DIR$/Sharad_Ekale_BWT/config/Project_2_congig details/job.config" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sharad_Ekale_BWT/scripts/Project2_Scripts/full_load.sh" beforeDir="false" afterPath="$PROJECT_DIR$/Sharad_Ekale_BWT/scripts/Project2_Scripts/full_load_import.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sharad_Ekale_BWT/scripts/Project2_Scripts/full_load_import.sh" beforeDir="false" afterPath="$PROJECT_DIR$/Sharad_Ekale_BWT/scripts/Project2_Scripts/full_load_import.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sharad_Ekale_BWT/scripts/Project2_Scripts/hive_one_off.sh" beforeDir="false" afterPath="$PROJECT_DIR$/Sharad_Ekale_BWT/scripts/Project2_Scripts/hive_one_off.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sharad_Ekale_BWT/scripts/Project2_Scripts/injection_local_to_hdfs.sh" beforeDir="false" afterPath="$PROJECT_DIR$/Sharad_Ekale_BWT/scripts/Project2_Scripts/injection_local_to_hdfs.sh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

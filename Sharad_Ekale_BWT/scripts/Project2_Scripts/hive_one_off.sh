@@ -22,7 +22,7 @@ if [ $? -ne 0 ]; then
  echo ${date_time_log} "INFO:" "Datebase Created Successfully" ${bash_name} >>"${log_location}"
 
 #Creating Hive Tables
-hive -e "CREATE EXTERNAL TABLE IF NOT EXISTS airports(
+hive -e "CREATE EXTERNAL TABLE IF NOT EXISTS bwt_flightdata.airports(
 airport_id int,
 city STRING,
 state STRING,
@@ -32,7 +32,7 @@ row format delimited
 fields terminated by ','
 lines terminated by '\n'
 stored as textfile
-LOCATION '/home/cloudera/project_2/hive_tables/'"
+LOCATION '/user/cloudera/flightdata/airports/'"
 
 if [ $? -ne 0 ]; then
   echo ${date_time_log} "ERROR:" "Failed to Create Table(airports)" ${bash_name} >>"${log_location}"
@@ -41,7 +41,7 @@ if [ $? -ne 0 ]; then
  echo ${date_time_log} "INFO:" "Table(airports) Created Successfully" ${bash_name} >>"${log_location}"
 
 #Creating Hive Tables
-hive -e "CREATE EXTERNAL TABLE IF NOT EXISTS flights(
+hive -e "CREATE EXTERNAL TABLE IF NOT EXISTS bwt_flightdata.flights(
 DayofMonth INT,
 DayOfWeek INT,
 Carrier STRING,
@@ -55,7 +55,7 @@ row format delimited
 fields terminated by ','
 lines terminated by '\n'
 stored as textfile
-LOCATION '/home/cloudera/project_2/hive_tables/'"
+LOCATION '/user/cloudera/flightdata/flight/'"
 
 if [ $? -ne 0 ]; then
   echo ${date_time_log} "ERROR:" "Failed to Create Table(flights)" ${bash_name} >>"${log_location}"

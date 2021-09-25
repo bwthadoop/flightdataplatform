@@ -44,18 +44,19 @@ if [ $? -ne 0 ]; then
 fi
     echo ${date_time_log} "INFO: successfully  inserted record in audit table job_id:${job_id}" ${bash_name} >>"${log_location}"
 
+date=$(date +%Y%m%d)
 #checks to see if hadoop output dir exists
-hadoop fs -test -d ~/"${target_basepath}/${job_id}"
+hadoop fs -test -d ~/"${target_basepath}flight/${date}/"
 if [ $? == 0 ]; then
-   hadoop fs -rm -r ~/"${target_basepath}"
+   hadoop fs -rm -r ~/"${target_basepath}flight/${date}/"
 else
     echo ${date_time_log} "Output file doesn't exist and will be created when hadoop runs" ${bash_name} >>"${log_location}"
 fi
 #making target directory
-hadoop fs -mkdir ${target_basepath}${job_id}
+hadoop fs -mkdir ${target_basepath}flight/${date}/
 
 #coping file from local to hdfs
-hadoop fs -copyFromLocal ${source_path}* ${target_basepath}/${job_id}/
+hadoop fs -copyFromLocal ${source_path}* ${target_basepath}flight/${date}/
 
 #update record in audit table
 if [ $? -ne 0 ]; then

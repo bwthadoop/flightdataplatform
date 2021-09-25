@@ -51,13 +51,14 @@ fi
     echo ${date_time_log} "INFO: successfully  inserted record in audit table job_id:${job_id}" ${bash_name} >>"${log_location}"
 
 # sqoop import
+date=$(date +%Y%m%d)
 sqoop import \
 --connect jdbc:mysql://${hostname}:${port}/${database_name} \
 --username=${username} \
 --password=${password} \
 --split-by=${split_by} \
 --table=${table_name} \
---target-dir=${target_basepath}mysql/$job_id/$2 \
+--target-dir=${target_basepath}airport/${date}/ \
 --delete-target-dir | tee
 >>"${log_location}"
 
