@@ -1,66 +1,41 @@
-#########################################################
-#script name : hivetbl.sh                             #
-#Author name: Harshali Dipnaik                          #
-#Date:20-09-2021                                        #
-#Description : Hive Table Creation                      #
-#run_command syntax : bash script_name.sh  #
-#########################################################
 
-#Create datetime var for log file and write log into file.
-current_date=$(date +"%Y_%m_%d")
-date_time_log=$(date +"%Y/%m/%d %H%M%S")
+    LOG_FILE1=/home/hadoop/AirportDBProject/flightdata/$0
+    log_date=$(date '+%Y%m%d_%H%M%S')
+    exec > >(tee ${LOG_FILE1}_${log_date}.log) 2>&1
 
-#Get a bash name
-bash_name=$(basename  "$0" | cut -f 1 -d '.')
-log_location="${target_basepath}"${bash_name}"_"${log_datetime}.log
-exec 2>>${log_location}
+#creating databases
+hive -e "create database if not exists bwt_flightdata_arc"
 
-#creating database
-hive -e "CREATE DATABASE IF NOT EXISTS bwt_flightdata"
-if [ $? -ne 0 ]; then
-  echo ${date_time_log} "ERROR:" "Failed to Create Database" ${bash_name} >>"${log_location}"
-  exit 1
-  fi
- echo ${date_time_log} "INFO:" "Datebase Created Successfully" ${bash_name} >>"${log_location}"
-
-#Creating Hive Tables
-hive -e "CREATE EXTERNAL TABLE IF NOT EXISTS airporttbl(
-airport_id STRING,
-city STRING,
-state STRING,
-name STRING
+#creating table bwt_airport_data
+hive -e "create external table if not exists bwt_flightdata_arc.bwt_airport_data
+(
+airport_id string,
+city string,
+state string,
+airportname string
 )
 row format delimited
 fields terminated by ','
 lines terminated by '\n'
 stored as textfile
-LOCATION '/user/airportdata/tblairport'"
+location '/user/airportdata/tblairport';"
 
-if [ $? -ne 0 ]; then
-  echo ${date_time_log} "ERROR:" "Failed to Create Airport Table" ${bash_name} >>"${log_location}"
-  exit 1
-  fi
- echo ${date_time_log} "INFO:" "Airport Table  Created Successfully" ${bash_name} >>"${log_location}"
 
-#Creating Hive Tables
-hive -e "CREATE EXTERNAL TABLE IF NOT EXISTS flighttbl(
-DayofMonth STRING,
-DayOfWeek STRING,
-Carrier STRING,
-OriginAirportID STRING,
-DestAirportID STRING,
-DepDelay STRING,
-ArrDelay STRING
+
+#creating table for bwt_airport_data
+hive -e "Create external table if not exists bwt_flightdata_arc.bwt_flight_data
+(
+dayofmonth string,
+dayofweek string,
+carrier string,
+Originaurport string,
+destairport string,
+depdelay string,
+arrdelay string,
+entrydate string
 )
 row format delimited
 fields terminated by ','
 lines terminated by '\n'
 stored as textfile
-LOCATION '/user/hadoop/flightdata/${current_date}'"
-
-if [ $? -ne 0 ]; then
-  echo ${date_time_log} "ERROR:" "Failed to Create Flight Table" ${bash_name} >>"${log_location}"
-  exit 1
-  fi
- echo ${date_time_log} "INFO:" "Flight Table Created Successfully" ${bash_name} >>"${log_location}"
-
+location '/user/hadoop/flightdata';"
