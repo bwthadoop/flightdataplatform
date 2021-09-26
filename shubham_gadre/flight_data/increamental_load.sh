@@ -23,13 +23,13 @@ echo "Script Name : " $0
 job_id=$(date '%H%M%S')
 job_name=$0
 
-mysql -u${username} -p${auth_value} -e "insert into ${audit_db}.${audit_tb} (job_id, job_name,run_status) values(${job_id},'${job_name}','RUNNING')"
+mysql -u${username} -p${pass} -e "insert into ${audit_db}.${audit_tb} (job_id, job_name,run_status) values(${job_id},'${job_name}','RUNNING')"
 
 if [ $? -ne 0 ]; then
-    echo" [$timeAndDate] ERROR :: failed to insert records in audit table"
+    echo"  failed to insert records in audit table"
     exit 1
 fi
-echo"[$timeAndDate] INFO :: Successfully inserted records in audit table for job_id:${job_id}"
+echo"  Successfully inserted records in audit table for job_id:${job_id}"
 
 // *************************************************************************************************************
 hadoop fs -copyFromLocal ${linux_loc}/${input_file} ${hadoop_arc_loc}/${dateval}
@@ -54,7 +54,7 @@ currenttime=$(date '+%Y-%m-%d %H:%M:%S')
 mysql -u${username} -p${auth_value} -e "update ${audit_db}.${audit_tb} set run_status='${job_status}',job_end_time='${currenttime}' where job_id=${job_id}"
 
     if [ $? -ne 0 ]; then
-        echo"[$timeAndDate] ERROR :: failed to update records in audit table for job_id:${job_id}"
+        echo"failed to update records in audit table for job_id:${job_id}"
         exit 1
     fi
-    echo "[$timeAndDate] INFO :: Successfully update record into audit table:${audit_db}.${audit_tb} for job_id =${job_id}"
+    echo " Successfully update record into audit table:${audit_db}.${audit_tb} for job_id =${job_id}"
