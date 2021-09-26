@@ -79,6 +79,7 @@ if [ $? -ne 0 ]; then
         echo ${date_time} "ERROR:" ${bash_name} "Failed to update record in audit table JOB_ID:${job_id}" >>"${log_location}"
         exit 1
     fi
+
      echo ${date_time} "ERROR:" ${bash_name} "successfully  update record in audit table JOB_ID:${job_id}" >>"${log_location}"
      exit 1
 fi

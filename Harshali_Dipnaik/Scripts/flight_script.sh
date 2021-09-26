@@ -74,14 +74,28 @@ if [ "$overwrite_option" == "Yes" ]; then
   hadoop fs -copyFromLocal -f ${inputpath} ${filedir}/${current_date}
   if [ $? -ne 0 ]; then
     echo ${date_time} "ERROR:" ${bash_name} "Error:Data not copied" >>"${log_location}"
-  else
+    #update record in audit table
+        mysql -u${username} -p${pass} -e "update ${audit_database_name}.${audit_table_name} set run_status='FAILED' WHERE job_id=${job_id}"
+        if [ $? -ne 0 ]; then
+            echo ${date_time} "ERROR:" ${bash_name} "Failed to update record in audit table JOB_ID:${job_id}" >>"${log_location}"
+            exit 1
+        fi
+         echo ${date_time} "ERROR:" ${bash_name} "successfully  update record in audit table JOB_ID:${job_id}" >>"${log_location}"
+   else
     echo ${date_time} "SUCCESS:" ${bash_name} "Data overwrite successfully" >>"${log_location}"
   fi
 else
   hadoop fs -copyFromLocal ${inputpath} ${filedir}/${current_date}
   if [ $? -ne 0 ]; then
     echo ${date_time} "ERROR:" ${bash_name} "Error:Data not copied" >>"${log_location}"
-  else
+    #update record in audit table
+        mysql -u${username} -p${pass} -e "update ${audit_database_name}.${audit_table_name} set run_status='FAILED' WHERE job_id=${job_id}"
+        if [ $? -ne 0 ]; then
+            echo ${date_time} "ERROR:" ${bash_name} "Failed to update record in audit table JOB_ID:${job_id}" >>"${log_location}"
+            exit 1
+        fi
+         echo ${date_time} "ERROR:" ${bash_name} "successfully  update record in audit table JOB_ID:${job_id}" >>"${log_location}"
+    else
     echo ${date_time} "SUCCESS:" ${bash_name} "Data Copied successfully" >>"${log_location}"
   fi
 fi
