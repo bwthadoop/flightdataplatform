@@ -83,6 +83,7 @@ if [ "$overwrite_option" == "Yes" ]; then
          echo ${date_time} "ERROR:" ${bash_name} "successfully  update record in audit table JOB_ID:${job_id}" >>"${log_location}"
    else
     echo ${date_time} "SUCCESS:" ${bash_name} "Data overwrite successfully" >>"${log_location}"
+
   fi
 else
   hadoop fs -copyFromLocal ${inputpath} ${filedir}/${current_date}
