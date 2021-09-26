@@ -1,5 +1,5 @@
 #######################################################################################
-# Script Name  : airportscript.sh                                                     #
+# Script Name  : full_load.sh                                                     #
 # Author       : Shubham Gadre                                                        #
 # Date created : 2021-09-19                                                           #
 # Discription  : Ingestion of data from rdbms to hdfs                                 #
