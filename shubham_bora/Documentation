@@ -1,0 +1,51 @@
+--------------------------------------------Schema---------------------
+--------hive ------
+
+create database bwt_flightdata_arc;
+
+create external table airport_tb
+(airport_id int,city string,state string,name string)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED by ','
+LINES TERMINATED by '\n'
+stored as textfile
+location '/user/flight_data/airport_tb';
+
+
+CREATE EXTERNAL TABLE flight_tb(DayofMonth int,
+DayOfWeek int,
+Carrier string,
+OriginAirportID int,
+DestAirportID int,
+DepDelay int,
+ArrDelay int,
+  EntryDate string)
+ ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
+ WITH SERDEPROPERTIES (
+ "separatorChar" = ",",
+"escapeChar"  = "\\"
+)
+STORED AS TEXTFILE
+location "/user/flight_data/flight_tb"
+tblproperties('skip.header.line.count'='1');
+
+
+-----subdirectory enable ------
+
+set hive.mapred.supports.subdirectories=true;
+set mapred.input.dir.recursive=true;
+
+
+----------mysql---
+
+create table audit_tb
+	(
+	job_id int,
+	job_name varchar(100),
+	run_status varchar(100),
+	job_start_time datetime default current_timestamp,
+	job_end_time timestamp
+	);
+grant all privileges on flight_data.* to root@localhost identified by 'password';                    //have to ask sir about grant privilege error
+
+ALTER TABLE audit_tb MODIFY job_id BIGINT;
