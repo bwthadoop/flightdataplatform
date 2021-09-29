@@ -3,9 +3,9 @@
 # Author                  : Ketan Nehete                                                             #
 # Create date             : 2021-09-17                                                               #
 # Description             : Import daily load Data from local to hdfs                                #
-# Run command             : bash copydata.sh                                                         #
+# Run command             : bash copydata.sh                                                        #
 # Run command Syntax      : bash <Script_Name> <local src> <dest src> <overwrite>                    #
-# Example                 : bash copydata.sh  flightdata.csv  /flightdata overwrite                  #
+# Example                 : bash copydata.sh                                                        #
 ######################################################################################################
 
 
@@ -80,7 +80,7 @@ fi
 
 sql_password=$(echo ${password/file:\/\//})
 
-echo ${sql_password}
+
 database_name=$1
 
 
@@ -124,7 +124,7 @@ fi
 #copying data from source
 if [ -z ${3} ];
 then
-  hadoop fs -put ${localsrc} ${destsrc}/${date}
+  hadoop fs -copyFromLocal ${localsrc}/* ${destsrc}/${date}
   if [ $? -ne 0 ]; then
       printerror  "unable to copy data if file already exits then give overwrite parameter"
        job_failure
@@ -132,12 +132,10 @@ then
       exit 1
   else
       echo "INFO: copied data successfully"
-      mysql -u${username} --password=$(cat ${sql_password})  -e "update ${audit_database_name}.${audit_tablename} set job_status='COMPLETE' where job_id=${jobid}"
-          checkstatus "INFO:updated record into ${audit_tablename} for ${job_id}" "ERROR: fAILED TO Update RECORD INTO AUDIT TABLE"
-        echo "check the log file ${LOG_FILE1}_${log_date}.log"
+
   fi
 else
-   hadoop fs -put -f ${localsrc} ${destsrc}/${date}
+   hadoop fs -copyFromLocal -f ${localsrc}/* ${destsrc}/${date}
    if [ $? -ne 0 ]; then
          printerror  "unable to copy data"
           job_failure
@@ -145,12 +143,36 @@ else
          exit 1
      else
          echo "INFO: copied data successfully"
-         mysql -u${username} --password=$(cat ${sql_password})  -e "update ${audit_database_name}.${audit_tablename} set job_status='COMPLETE' where job_id=${jobid}"
-             checkstatus "INFO:updated record into ${audit_tablename} for ${job_id}" "ERROR: fAILED TO Update RECORD INTO AUDIT TABLE"
-           echo "check the log file ${LOG_FILE1}_${log_date}.log"
      fi
 fi
 
 
+#creating directory in local location
+mkdir -p ${move_dest}/${date}
+if [ $? -ne 0 ]; then
+    printerror "Directory creation failed"
+     job_failure
+      printlogpath
+    exit 1
+else
+    echo "INFO: make directory successfully"
+fi
 
+
+#moving file which are copied succesfully
+  mv ${localsrc}/* ${move_dest}/${date}
+   if [ $? -ne 0 ]; then
+         printerror  "unable to move data"
+          job_failure
+           printlogpath
+         exit 1
+     else
+         echo "INFO: moved data successfully"
+     fi
+
+
+#updating job status complete
+mysql -u${username} --password=$(cat ${sql_password})  -e "update ${audit_database_name}.${audit_tablename} set job_status='COMPLETE' where job_id=${jobid}"
+          checkstatus "updated record into ${audit_tablename} for ${jobid}" "ERROR: fAILED TO Update RECORD INTO AUDIT TABLE"
+        echo "check the log file ${LOG_FILE1}_${log_date}.log"
 
