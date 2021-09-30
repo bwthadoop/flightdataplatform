@@ -23,7 +23,7 @@ fi
   echo ${INFO} "Job.config File Imported Successfully"
 
 echo "Copying Flight File to HDFS"
-copyFromLocal ${src_path} ${target_base_path}
+hadoop fs -copyFromLocal ${src_path} ${target_base_path}
 
 if [ $? -ne 0 ]
 then
