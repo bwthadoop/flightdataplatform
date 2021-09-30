@@ -38,17 +38,17 @@ job_id=$(date '+%H%M%S')
 job_name="${1}.${2}"
 
 #insert record into audit table
-mysql -u${user_name} -p${mysql_password} -e "insert into ${1}.${audit_table}(job_id,job_name,job_status,run_date) values (${job_id},'${job_name}','RUNNING',current_date)"
+mysql -u${user_name} -p${mysql_password} -e "insert into ${1}.${airport_audit_table}(job_id,job_name,job_status,run_date) values (${job_id},'${job_name}','RUNNING',current_date)"
 
 if [ $? -ne 0 ]
 then
   echo -e ${ERROR} " Failed to Insert Data into Audit Table"
   exit 1
 fi
-  echo -e ${INFO}" Inserted Record into ${audit_table} for ${job_name}"
+  echo -e ${INFO}" Inserted Record into ${airport_audit_table} for ${job_name}"
 
 #re-run scenario
-job_status=$(mysql -u${user_name} -p${pass_value} -e "select job_name from ${1}.${audit_table} where run_status = 'Failed'")
+job_status=$(mysql -u${user_name} -p${pass_value} -e "select job_name from ${1}.${airport_audit_table} where run_status = 'Failed'")
 
 #check condition for number of arguments
 if [ "$#" -lt 4 ]
@@ -63,14 +63,14 @@ then
 echo -e ${ERROR} " Sqoop Import Failed"
 
 #updating table if job fail
-mysql -u${user_name} -p${mysql_password} -e "update ${1}.${audit_table} set run_status='FAILED' where job_id=${job_id} and job_name='${job_name}'"
+mysql -u${user_name} -p${mysql_password} -e "update ${1}.${airport_audit_table} set run_status='FAILED' where job_id=${job_id} and job_name='${job_name}'"
 
 if [ $? -ne 0 ]
   then
     echo -e ${ERROR} " Failed to Update Audit Table"
     exit 1
   fi
-    echo -e ${INFO}" Updated Record into ${audit_table} for ${job_name}"
+    echo -e ${INFO}" Updated Record into ${airport_audit_table} for ${job_name}"
     exit 1
   fi
     echo -e ${INFO}" Import Job Successful for ${1}.${2}"

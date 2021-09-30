@@ -22,18 +22,32 @@ then
 fi
   echo ${INFO} "Job.config File Imported Successfully"
 
-echo "Copying Flight File to HDFS"
-hadoop fs -copyFromLocal ${src_path} ${target_base_path}
+#insert record into audit table
+$1-spark
+mysql -u${user_name} -p${mysql_password} -e "insert into ${1}.${flight_audit_table}(job_id,job_name,job_status,run_date) values (${job_id},'${job_name}','RUNNING',current_date)"
 
 if [ $? -ne 0 ]
 then
-  echo -e ${ERROR} "Failed to Load Flight File in HDFS"
+  echo -e ${ERROR} " Failed to Insert Data into Audit Table"
+  exit 1
 fi
-  echo ${INFO} "Successfully Loaded Flight File in HDFS"
+  echo -e ${INFO}" Inserted Record into ${audit_table} for ${job_name}"
+
+hadoop fs -copyFromLocal ${src_path} ${target_base_path}/flights.csv
 
 if [ $? -ne 0 ]
 then
-  echo -e ${ERROR} " Failed to Create Database in Hive"
-fi
-  echo -e ${INFO}" Successfully Created Database in Hive"
+echo -e ${ERROR} " Copying File Failed"
 
+#updating table if job fail
+mysql -u${user_name} -p${mysql_password} -e "update ${1}.${flight_audit_table} set run_status='FAILED' where job_id=${job_id} and job_name='${job_name}'"
+
+if [ $? -ne 0 ]
+  then
+    echo -e ${ERROR} " Failed to Update Audit Table"
+    exit 1
+  fi
+    echo -e ${INFO}" Updated Record into ${flight_audit_table} for ${job_name}"
+    exit 1
+  fi
+    echo -e ${INFO}" Copying Job Successful"
