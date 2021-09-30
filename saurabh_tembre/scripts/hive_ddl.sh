@@ -1,3 +1,6 @@
+$1=spark
+$2=airports
+
 hive -e "create database if not exists ${1}"
 
 #create hive external table
@@ -26,7 +29,7 @@ hive -e " create external table if not exists ${1}.airports
          location '${target_base_path}/${2}'
          "
 read -p "Enter column for Partition: " partition
-$4=partition
+$3=partition
 
 hive -e " set hive.exec.dynamic.partition=true;
           set hive.exec.dynamic.partition.mode=nonstrict;
