@@ -6,6 +6,10 @@
 # Description : Loading Data from Local to into Hive through HDFS             #
 ###############################################################################
 
+. config/functions.sh
+
+log_function
+
 #If condition for credential.config file
 . config/credentials.config
 if [ $? -ne 0 ]

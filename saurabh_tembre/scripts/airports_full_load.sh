@@ -11,8 +11,7 @@
 . config/functions.sh
 
 log_function
-message
-airports.sh spark airports airport_id
+
 echo "Script Name: " $0
 echo "Database Name: " $1
 echo "Table Name: " $2
