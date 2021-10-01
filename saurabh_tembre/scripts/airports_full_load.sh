@@ -12,7 +12,7 @@
 
 log_function
 message
-
+airports.sh spark airports airport_id
 echo "Script Name: " $0
 echo "Database Name: " $1
 echo "Table Name: " $2
@@ -38,7 +38,7 @@ job_id=$(date '+%H%M%S')
 job_name="${1}.${2}"
 
 #insert record into audit table
-mysql -u${user_name} -p${mysql_password} -e "insert into ${1}.${airport_audit_table}(job_id,job_name,job_status,run_date) values (${job_id},'${job_name}','RUNNING',current_date)"
+mysql -u${user_name} -p${mysql_password} -e "insert into ${1}.${airport_audit_table}(job_id,job_name,run_status,run_date) values (${job_id},'${job_name}','RUNNING',current_date)"
 
 if [ $? -ne 0 ]
 then
@@ -50,13 +50,8 @@ fi
 #re-run scenario
 job_status=$(mysql -u${user_name} -p${pass_value} -e "select job_name from ${1}.${airport_audit_table} where run_status = 'Failed'")
 
-#check condition for number of arguments
-if [ "$#" -lt 4 ]
-then
-  echo " Import Job in Process"
-  sqoop import --connect "jdbc:mysql://${host_name}:${port_id}/${1}" --username ${user_name} --password-file ${pass_value} --table ${2} --target-dir ${target_base_path}/${2} --delete-target-dir -m4
-fi
-  sqoop import --connect "jdbc:mysql://${host_name}:${port_id}/${1}" --username ${user_name} --password-file ${pass_value} --table ${2} --target-dir ${target_base_path}/${2} --delete-target-dir --split-by ${3}
+#sqoop import job
+sqoop import --connect "jdbc:mysql://${host_name}:${port_id}/${1}" --username ${user_name} --password-file ${pass_value} --table ${2} --target-dir ${target_base_path}/${2} --delete-target-dir --split-by ${3}
 
 if [ $? -ne 0 ]
 then

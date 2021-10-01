@@ -1,6 +1,3 @@
-$1=spark
-$2=flights
-
 hive -e "create table flights_temp
          (
          DayofMonth	int,
@@ -16,6 +13,7 @@ hive -e "create table flights_temp
          fields terminated by ','
          lines terminated by '/n'
          "
+
 hive -e " create external table if not exists ${1}.flights
          (
          airport_id int,
@@ -28,13 +26,12 @@ hive -e " create external table if not exists ${1}.flights
          lines terminated by '/n'
          location '${target_base_path}/${2}'
          "
-read -p "Enter column for Partition: " partition
-$3=partition
+read -p "Enter column for Partition: " part_col
 
 hive -e " set hive.exec.dynamic.partition=true;
           set hive.exec.dynamic.partition.mode=nonstrict;
           set hive.support.quoted.identifiers=none;
-          insert overwrite ${1}.${2} partition(${3}) select \`(${3})?+.+\`,${3} from ${1}.${flights_temp};
+          insert overwrite ${1}.${2} partition(${part_col}) select \`(${part_col})?+.+\`,${part_col} from ${1}.${flights_temp};
           "
 if [ $? -ne 0 ]
 then
