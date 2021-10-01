@@ -13,6 +13,7 @@ hive -e "create table flights_temp
          fields terminated by ','
          lines terminated by '/n'
          "
+         load data inpath "${target_base_path}/${2}" into table ${flights_temp};
 
 hive -e " create external table if not exists ${1}.flights
          (

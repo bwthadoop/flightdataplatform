@@ -13,7 +13,7 @@
            fields terminated by ','
            lines terminated by '/n';
 
-           load data inpath "${target_base_path}/${2}" into table airports_temp
+           load data inpath "${target_base_path}/${2}" into table ${airport_temp};
 
            create external table if not exists ${1}.airports
            (
