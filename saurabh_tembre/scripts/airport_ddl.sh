@@ -34,7 +34,7 @@ $3=partition
 hive -e " set hive.exec.dynamic.partition=true;
           set hive.exec.dynamic.partition.mode=nonstrict;
           set hive.support.quoted.identifiers=none;
-          insert overwrite ${1}.${2} partition(${4}) select \`(${4})?+.+\`,${4} from ${1}.${airport_temp};
+          insert overwrite ${1}.${2} partition(${3}) select \`(${3})?+.+\`,${3} from ${1}.${airport_temp};
           "
 if [ $? -ne 0 ]
 then
