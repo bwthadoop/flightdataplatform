@@ -76,4 +76,4 @@ if [ $? -ne 0 ]
     echo -e ${INFO}" Import Job Successful for ${1}.${2}"
 
 #create hive database
-hive_ddl.sh
+. airport_ddl.sh

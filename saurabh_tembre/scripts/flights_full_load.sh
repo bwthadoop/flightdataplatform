@@ -53,4 +53,4 @@ if [ $? -ne 0 ]
     echo -e ${INFO}" Copying Job Successful"
 
 #hive DDL commands for flight data
-flights_hive_ddl.sh
+. flights_ddl.sh
