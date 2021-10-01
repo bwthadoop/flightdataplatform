@@ -69,5 +69,21 @@ if [ $? -ne 0 ]
   fi
     echo -e ${INFO}" Import Job Successful for ${1}.${2}"
 
+#retrive current date
+temp_max_date=$(date)
+
+tmp_update_date=$(echo -e $temp_max_date | cut -d' ' -f2)
+tmp_update_time=$(echo -e $temp_max_date | cut -d' ' -f3)
+update_date=$(echo $tmp_update_date $tmp_update_time)
+
+#update last value
+mysql --defaults-extra-file=${mysql_password} -e "update ${1}.${airport_audit_table} set last_job_date='${update_date}',run_status='COMPLETE' where job_id=${job_id}"
+
+if [ $? -ne 0 ]; then
+    echo -e ${ERROR} " Failed to Update Record into Audit Table"
+    exit 1
+fi
+  echo -e ${INFO}" Updated Record into ${airport_audit_table} for ${job_id}"
+
 #create hive database
 . airport_ddl.sh
