@@ -38,7 +38,7 @@ job_id=$(date '+%H%M%S')
 job_name="${1}.${2}"
 
 #insert record into audit table
-mysql -u${user_name} -p${mysql_password} -e "insert into ${1}.${airport_audit_table}(job_id,job_name,run_status,run_date) values (${job_id},'${job_name}','RUNNING',current_date)"
+mysql --defaults-extra-file=${mysql_password} -e "insert into ${1}.${airport_audit_table}(job_id,job_name,run_status,run_date) values (${job_id},'${job_name}','RUNNING',current_date)"
 
 if [ $? -ne 0 ]
 then
@@ -48,7 +48,7 @@ fi
   echo -e ${INFO}" Inserted Record into ${airport_audit_table} for ${job_name}"
 
 #re-run scenario
-job_status=$(mysql -u${user_name} -p${pass_value} -e "select job_name from ${1}.${airport_audit_table} where run_status = 'Failed'")
+job_status=$(mysql --defaults-extra-file=${mysql_password} -e "select job_name from ${1}.${airport_audit_table} where run_status = 'Failed'")
 
 #sqoop import job
 sqoop import --connect "jdbc:mysql://${host_name}:${port_id}/${1}" --username ${user_name} --password-file ${pass_value} --table ${2} --target-dir ${target_base_path}/${2} --delete-target-dir --split-by ${3}
@@ -58,7 +58,7 @@ then
 echo -e ${ERROR} " Sqoop Import Failed"
 
 #updating table if job fail
-mysql -u${user_name} -p${mysql_password} -e "update ${1}.${airport_audit_table} set run_status='FAILED' where job_id=${job_id} and job_name='${job_name}'"
+mysql --defaults-extra-file=${mysql_password} -e "update ${1}.${airport_audit_table} set run_status='FAILED' where job_id=${job_id} and job_name='${job_name}'"
 
 if [ $? -ne 0 ]
   then

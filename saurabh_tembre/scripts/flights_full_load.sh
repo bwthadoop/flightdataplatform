@@ -24,7 +24,7 @@ fi
 
 #insert record into audit table
 $1-spark
-mysql -u${user_name} -p${mysql_password} -e "insert into ${1}.${flight_audit_table}(job_id,job_name,job_status,run_date) values (${job_id},'${job_name}','RUNNING',current_date)"
+mysql --defaults-extra-file=${mysql_password} -e "insert into ${1}.${flight_audit_table}(job_id,job_name,job_status,run_date) values (${job_id},'${job_name}','RUNNING',current_date)"
 
 if [ $? -ne 0 ]
 then
@@ -40,7 +40,7 @@ then
 echo -e ${ERROR} " Copying File Failed"
 
 #updating table if job fail
-mysql -u${user_name} -p${mysql_password} -e "update ${1}.${flight_audit_table} set run_status='FAILED' where job_id=${job_id} and job_name='${job_name}'"
+mysql --defaults-extra-file=${mysql_password} -e "update ${1}.${flight_audit_table} set run_status='FAILED' where job_id=${job_id} and job_name='${job_name}'"
 
 if [ $? -ne 0 ]
   then
