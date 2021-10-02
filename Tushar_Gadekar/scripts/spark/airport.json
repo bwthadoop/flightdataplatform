@@ -1,0 +1,16 @@
+{
+  "name": "airport",
+  "datatype_check" : {
+    "airport_id": "int",
+    "city": "string",
+    "state": "string",
+    "name": "string"
+
+  },
+  "null_check" : "airport_id,city,state,name",
+  "special_character_check": {
+    "name" : "#@$%&*)(-+!/.\\'^0-9~`:*‚_¤?<>|ª{«»§}©®™",
+    "city" : "#@$%&*)(-+!/.\\'^0-9~`:*‚_¤?<>|ª{«»§}©®™"
+  },
+  "header_list": "airport_id,city,state,name"
+}

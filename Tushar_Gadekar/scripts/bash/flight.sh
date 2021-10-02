@@ -1,5 +1,5 @@
 ###########################################################
-# Script name :flight.sh                                    #
+# Script name :Incremental_load.sh                         #
 # Autor:       Tushar_Gadekar                               #
 # Description: data migration using bash                    #
 # creator:   Tushar G
@@ -39,17 +39,17 @@ echo -e "\e[32m${log_date}:[INFO]:${Script_name}:successfully import project2_jo
 awk -F', ' '
   ($8 ==01/01/2020)
   { print}' /home/hadoop/Hadoop_21/Project2/Fulltabledata/flights.csv >${localpath}
-#/home/hadoop/Hadoop_21/Project2/split_data_files/flights.csv > /home/hadoop/Hadoop_21/Project2/split_data_files/file.csv
+
+#fetching sql password
+sql_pwd=$(echo ${password_file/file:\/\//})
 
 job_id=$(date '+%H%M%S')
-# shellcheck disable=SC2154
-job_name1="${job_name1}_${Script_name}"
+job_name1="${job_name}_${Script_name}"
 
 # insert record into audit_tb
-# shellcheck disable=SC2154
-mysql -u"${username}" -p"${password}" -e "insert into ${audit_database_name}.${audit_table_name}(job_id,job_name
+mysql -u"${username}" -p"$(cat ${sql_pwd})" -e "insert into ${audit_database_name}.${audit_table_name}(job_id,job_name
   ,run_date,run_status) values(${job_id},'${job_name1}',current_date(),'RUNNING')"
-# shellcheck disable=SC2181
+
 ## Error Handling
 if [ $? -ne 0 ]; then
   echo "${log_date}:Error:${Script_name}:Failed to insert data into audit table"
@@ -75,7 +75,7 @@ if [ $? -ne 0 ]; then
 
   # update record into audit_tb if job failed
   # shellcheck disable=SC2086
-  mysql -u${username} -p"${password}" -e "update ${audit_database_name}.${audit_table_name} set run_status='FAILED'
+  mysql -u${username} -p"$(cat ${sql_pwd})" -e "update ${audit_database_name}.${audit_table_name} set run_status='FAILED'
 where job_id=${job_id} and job_name='${job_name1}'"
   if [ $? -ne 0 ]; then
     echo "${log_date}:Error:${Script_name}:Failed to update data into audit table"
@@ -133,7 +133,7 @@ echo Hive create table add partition: EntryDate=${day} ok...
 
 # update succes entery in audit_table
 # shellcheck disable=SC2086
-mysql -u${username} -p"${password}" -e "update ${audit_database_name}.${audit_table_name} set run_status='COMPLETED'
+mysql -u${username} -p"$(cat ${sql_pwd})" -e "update ${audit_database_name}.${audit_table_name} set run_status='COMPLETED'
 where job_id=${job_id} and job_name='${job_name1}'"
 # shellcheck disable=SC2181
 if [ $? -ne 0 ]; then

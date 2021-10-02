@@ -1,0 +1,18 @@
+{
+  "name": "flight_dqcheck",
+  "datatype_check" : {
+    "DayofMonth": "int",
+    "DayOfWeek": "string",
+    "Carrier": "string",
+    "OriginAirportID": "string",
+    "DestAirportID": "string",
+    "DepDelay": "string",
+    "ArrDelay":"string",
+    "EntryDate":"string"
+  },
+  "null_check" : "DayofMonth,DayOfWeek,Carrier,OriginAirportID,DestAirportID,DepDelay,ArrDelay,EntryDate",
+  "special_character_check": {
+    "Carrier" : "#@$%&*)(-+!/.\\'^0-9~`:*‚_¤?<>|ª{«»§}©®™"
+  },
+  "header_list": "DayofMonth,DayOfWeek,Carrier,OriginAirportID,DestAirportID,DepDelay,ArrDelay,EntryDate"
+}
